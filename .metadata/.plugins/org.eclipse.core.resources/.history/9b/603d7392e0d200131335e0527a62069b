@@ -1,0 +1,45 @@
+package upload;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+
+public class hdfsUploader {
+	
+	//Will be used to upload the files and generate the sequence file
+	sequenceUploader sUploader;
+	fileUploader fUploader;
+	
+	
+	public void readConfiguration(String configurationFile){
+		
+	}
+	
+
+	public void main(String[] args) {
+		if (args.length!=1){
+			System.out.println("hadoop jar hdfsUploader.jar Configuration/Configuration.json");
+		}
+		else
+		{
+			String configurationFile;
+			configurationFile=args[0];
+			
+			
+			readConfiguration(configurationFile);
+			
+			sUploader = new sequenceUploader();
+			fUploader = new fileUploader();
+			
+			
+			
+			
+			
+			
+			
+		}
+		
+
+	}
+
+}

@@ -1,0 +1,8 @@
+{
+	"Input Folder": "Data",
+	"Process Folder":"Process",
+	"Loaded Folder":"Loaded",
+	"Output Classify Folder":"Incoming/TweetsToClassify",
+	"Output Common Folder":"Incoming/Tweets"
+}
+	

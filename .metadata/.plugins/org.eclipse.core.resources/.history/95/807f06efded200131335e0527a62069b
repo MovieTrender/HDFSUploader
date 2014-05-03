@@ -1,0 +1,34 @@
+package upload;
+
+public class hdfsUploader {
+	
+	public void readConfiguration(String configurationFile){
+		
+	}
+	
+	
+	
+	
+
+	public static void main(String[] args) {
+		if (args.length!=1){
+			System.out.println("hadoop jar hdfsUploader.jar Configuration/Configuration.json");
+		}
+		else
+		{
+			String configurationFile;
+			configurationFile=args[0];
+			
+			
+			readConfiguration(configurationFile);
+			
+			
+			
+			
+			
+		}
+		
+
+	}
+
+}
