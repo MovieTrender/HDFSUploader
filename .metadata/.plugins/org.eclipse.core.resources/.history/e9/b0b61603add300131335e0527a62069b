@@ -52,8 +52,8 @@ public class HDFSUploader {
 			String sequenceFile = outputClassifyFolder+"/"+tmstampFile;
 			
 			
-			//sUploader = new sequenceUploader();
-			//sUploader.generateSequeceFileRecursive(inputClassifyFolder,sequenceFile);
+			sUploader = new sequenceUploader();
+			sUploader.generateSequeceFileRecursive(inputClassifyFolder,sequenceFile);
 			
 			
 			//Upload the files to HDFS

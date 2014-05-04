@@ -64,8 +64,6 @@ public class utils {
 		File folder = new File(source);
 		File [] listofFiles= folder.listFiles();
 		
-		System.out.println("Source Folder: "+ source);
-		
 		//Iterate for all the files of the input folder\
 		for (File file: listofFiles){
 			if (file.isDirectory() && file.getName().indexOf("ACK")>=0){
