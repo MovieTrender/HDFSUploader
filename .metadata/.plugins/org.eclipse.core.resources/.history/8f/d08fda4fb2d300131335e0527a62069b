@@ -1,6 +1,6 @@
 
 import java.io.File;
-import org.apache.commons.io.FileUtils;
+import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,9 +59,10 @@ public class utils {
 	public void moveFolder(String source, String destination){
 		
 		//Folder to create
-		File fileDest;
+		Path fileDest;
 		
-
+		//Source folder to move
+		Path fileSource;
 
 		
 		//Open the folder and take all the folders inside
@@ -78,9 +79,10 @@ public class utils {
 					//Change access in folder.
 					Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
 				
-					fileDest=new File(destination+"/"+file.getName()); 
+					fileSource = FileSystems.getDefault().getPath(file.getAbsolutePath());
+					fileDest=FileSystems.getDefault().getPath(destination); 
 					
-					FileUtils.moveDirectory(file, fileDest);
+					Files.move(fileSource, fileDest,StandardCopyOption.REPLACE_EXISTING);
 				
 			
 				}catch (Exception e){
