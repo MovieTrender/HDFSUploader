@@ -51,14 +51,16 @@ public class HDFSUploader {
 			String tmstampFile = df.format(today);
 			String sequenceFile = outputClassifyFolder+"/"+tmstampFile;
 			
+			
+System.out.println("Generating Sequence File");
 			//Generate sequence file
-//			sUploader = new sequenceUploader();
-//			sUploader.generateSequeceFileRecursive(processClassifyFolder,sequenceFile);
+			sUploader = new sequenceUploader();
+			sUploader.generateSequeceFileRecursive(processClassifyFolder,sequenceFile);
 			
 			System.out.println("Uploading files to HDFS");
 			//Upload the files to HDFS
-			fileUploader fu = new fileUploader();
-			fu.fileUploader(processCommonFolder,outputCommonFolder);
+//			fileUploader fu = new fileUploader();
+//			fu.fileUploader(inputCommonFolder,outputCommonFolder);
 		
 			//Move Files to Loaded
 //			ut.moveFiles(processCommonFolder,loadedCommonFolder);
