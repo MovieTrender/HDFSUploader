@@ -97,7 +97,6 @@ System.out.println("Extracting file: "+file.getAbsolutePath());
 				appendSequenceFile(iFolder,file,fileOutput);
 			}
 			if (file.isDirectory()){
-System.out.println("Opening Folder: "+iFolder.getAbsolutePath());
 				iterateFolder(iFolder,fileOutput);
 			}
 		}

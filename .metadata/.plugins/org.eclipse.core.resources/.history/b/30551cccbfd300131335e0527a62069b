@@ -93,11 +93,9 @@ public class sequenceUploader {
 		//Iterate for all the files of the input folder\
 		for (File file: listofFiles){
 			if (file.isFile()){
-System.out.println("Extracting file: "+file.getAbsolutePath());
 				appendSequenceFile(iFolder,file,fileOutput);
 			}
 			if (file.isDirectory()){
-System.out.println("Opening Folder: "+iFolder.getAbsolutePath());
 				iterateFolder(iFolder,fileOutput);
 			}
 		}
@@ -123,13 +121,13 @@ System.out.println("Opening Folder: "+iFolder.getAbsolutePath());
 			//Open the folder and take all the files inside
 			File folder = new File(inputFolder);
 			
-System.out.println("OpeningFile");			
+			
 			//Open the sequence file
 			Path outputPath = new Path(outputFile);
 			@SuppressWarnings("deprecation")
 			SequenceFile.Writer fileOutput = new SequenceFile.Writer(fs, conf, outputPath, org.apache.hadoop.io.Text.class, org.apache.hadoop.io.Text.class);
 			
-System.out.println("Iterating folder");			
+			
 			iterateFolder(folder, fileOutput);
 			
 			

@@ -63,8 +63,8 @@ System.out.println("Generating Sequence File");
 //			fu.fileUploader(inputCommonFolder,outputCommonFolder);
 		
 			//Move Files to Loaded
-//			ut.moveFiles(processCommonFolder,loadedCommonFolder);
-//			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
+			ut.moveFiles(processCommonFolder,loadedCommonFolder);
+			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
 			
 			
 			

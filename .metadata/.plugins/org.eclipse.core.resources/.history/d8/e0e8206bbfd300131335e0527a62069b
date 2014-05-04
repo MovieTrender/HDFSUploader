@@ -46,25 +46,26 @@ public class HDFSUploader {
 			
 			//Upload files to HDS
 			//Generate the sequence files
+System.out.println("Opening Sequence File");
 			DateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
 			Date today = Calendar.getInstance().getTime();
 			String tmstampFile = df.format(today);
 			String sequenceFile = outputClassifyFolder+"/"+tmstampFile;
 			
 			
-System.out.println("Generating Sequence File");
+			System.out.println("Generating Sequence File");
 			//Generate sequence file
-			sUploader = new sequenceUploader();
-			sUploader.generateSequeceFileRecursive(inputClassifyFolder,sequenceFile);
+//			sUploader = new sequenceUploader();
+//			sUploader.generateSequeceFileRecursive(inputClassifyFolder,sequenceFile);
 			
 			System.out.println("Uploading files to HDFS");
 			//Upload the files to HDFS
-//			fileUploader fu = new fileUploader();
-//			fu.fileUploader(inputCommonFolder,outputCommonFolder);
+			fileUploader fu = new fileUploader();
+			fu.fileUploader(inputCommonFolder,outputCommonFolder);
 		
 			//Move Files to Loaded
-//			ut.moveFiles(processCommonFolder,loadedCommonFolder);
-//			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
+			ut.moveFiles(processCommonFolder,loadedCommonFolder);
+			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
 			
 			
 			

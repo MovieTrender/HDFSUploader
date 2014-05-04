@@ -93,11 +93,9 @@ public class sequenceUploader {
 		//Iterate for all the files of the input folder\
 		for (File file: listofFiles){
 			if (file.isFile()){
-System.out.println("Extracting file: "+file.getAbsolutePath());
 				appendSequenceFile(iFolder,file,fileOutput);
 			}
 			if (file.isDirectory()){
-System.out.println("Opening Folder: "+iFolder.getAbsolutePath());
 				iterateFolder(iFolder,fileOutput);
 			}
 		}

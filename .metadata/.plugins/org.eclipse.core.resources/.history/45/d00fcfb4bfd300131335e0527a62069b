@@ -46,6 +46,7 @@ public class HDFSUploader {
 			
 			//Upload files to HDS
 			//Generate the sequence files
+System.out.println("Opening Sequence File");
 			DateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
 			Date today = Calendar.getInstance().getTime();
 			String tmstampFile = df.format(today);
@@ -63,8 +64,8 @@ System.out.println("Generating Sequence File");
 //			fu.fileUploader(inputCommonFolder,outputCommonFolder);
 		
 			//Move Files to Loaded
-//			ut.moveFiles(processCommonFolder,loadedCommonFolder);
-//			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
+			ut.moveFiles(processCommonFolder,loadedCommonFolder);
+			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
 			
 			
 			

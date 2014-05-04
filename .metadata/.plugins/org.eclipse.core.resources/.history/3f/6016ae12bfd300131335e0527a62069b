@@ -52,19 +52,19 @@ public class HDFSUploader {
 			String sequenceFile = outputClassifyFolder+"/"+tmstampFile;
 			
 			
-System.out.println("Generating Sequence File");
+			System.out.println("Generating Sequence File");
 			//Generate sequence file
 			sUploader = new sequenceUploader();
 			sUploader.generateSequeceFileRecursive(inputClassifyFolder,sequenceFile);
 			
 			System.out.println("Uploading files to HDFS");
 			//Upload the files to HDFS
-//			fileUploader fu = new fileUploader();
-//			fu.fileUploader(inputCommonFolder,outputCommonFolder);
+			fileUploader fu = new fileUploader();
+			fu.fileUploader(inputCommonFolder,outputCommonFolder);
 		
 			//Move Files to Loaded
-//			ut.moveFiles(processCommonFolder,loadedCommonFolder);
-//			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
+			ut.moveFiles(processCommonFolder,loadedCommonFolder);
+			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
 			
 			
 			
