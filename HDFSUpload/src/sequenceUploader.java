@@ -5,6 +5,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,19 +20,13 @@ import java.io.IOException;
  */
 public class sequenceUploader {
 	
-	//Input Folder and output file to generate
-	String inputFolder;
-	String outputFile;
+
 	
 	//Cluster configuration 
 	Configuration conf;
 	FileSystem fs;
 	
-	//Variables needed for reading the files in the folder
-	String currentFile;
-	FileReader fileReader;
-	BufferedReader bufferedReader;
-	String content;
+
 	
 	/*
 	 * 		public sequenceUploader
@@ -52,18 +47,68 @@ public class sequenceUploader {
 	}
 	
 	
+	private void appendSequenceFile(File folder, File file, SequenceFile.Writer fileOutput ) throws FileNotFoundException, IOException{
+		//Variables needed for reading the files in the folder
+		String currentFile;
+		FileReader fileReader;
+		BufferedReader bufferedReader;
+		String content;
+		
+		
+		
+		//Reset content
+		content="";
+		
+		//Key and value to be written in the file
+		Text key = new Text();
+		Text value = new Text();
+		
+		//Read the file 
+		currentFile=file.getName();
+		fileReader =new FileReader(folder.getAbsolutePath()+"/"+currentFile);
+		bufferedReader = new BufferedReader(fileReader);
+		
+		content="";
+		
+		while (bufferedReader.ready()){
+			content+=bufferedReader.readLine();
+		}
+		
+		
+		//Write the content of the file to the sequence file
+		key =new Text(currentFile);
+		value=new Text(content);
+		//Append the key value to the file
+		fileOutput.append(key,value);
+		
+	}
 	
 	
-	/*
-	 *		public void generateSequenceFile
-	 *
-	 *		@param String iFolder. Input folder with all the files to merge in a sequence file
-	 *		@param String oFile.   Full path to the file to generate in HDFS
-	 *
-	 *		@desc Read all the files in the folder and generates a sequence file in HDFS
-	 * 	
-	 */
-	public void generateSequenceFile(String iFolder, String oFile) throws IOException{
+	private void iterateFolder(File iFolder, SequenceFile.Writer fileOutput ) throws FileNotFoundException, IOException{
+		
+		//Open the folder and take all the files inside
+		File [] listofFiles= iFolder.listFiles();
+		
+		
+		//Iterate for all the files of the input folder\
+		for (File file: listofFiles){
+			if (file.isFile()){
+				appendSequenceFile(iFolder,file,fileOutput);
+			}
+			if (file.isDirectory()){
+				iterateFolder(iFolder,fileOutput);
+			}
+		}
+		
+		
+	}
+	
+
+	public void generateSequeceFileRecursive(String iFolder, String oFile){
+		//Input Folder and output file to generate
+		String inputFolder;
+		String outputFile;
+		
 		
 		try{
 			
@@ -71,19 +116,11 @@ public class sequenceUploader {
 			inputFolder = iFolder;
 			outputFile = oFile;
 			
-			
-			//Reset content
-			content="";
-			
+
 			
 			//Open the folder and take all the files inside
 			File folder = new File(inputFolder);
-			File [] listofFiles= folder.listFiles();
 			
-		
-			//Key and value to be written in the file
-			Text key = new Text();
-			Text value = new Text();
 			
 			//Open the sequence file
 			Path outputPath = new Path(outputFile);
@@ -91,42 +128,26 @@ public class sequenceUploader {
 			SequenceFile.Writer fileOutput = new SequenceFile.Writer(fs, conf, outputPath, org.apache.hadoop.io.Text.class, org.apache.hadoop.io.Text.class);
 			
 			
-			//Iterate for all the files of the input folder\
-			for (File file: listofFiles){
-				if (file.isFile()){
-					
-					//Read the file 
-					currentFile=file.getName();
-					fileReader =new FileReader(folder.getAbsolutePath()+"/"+currentFile);
-					bufferedReader = new BufferedReader(fileReader);
-					
-					content="";
-					
-					while (bufferedReader.ready()){
-						content+=bufferedReader.readLine();
-					}
-					
-					
-					//Write the content of the file to the sequence file
-					key =new Text(currentFile);
-					value=new Text(content);
-					//Append the key value to the file
-					fileOutput.append(key,value);
-				}
-			}
-		
-		
+			iterateFolder(folder, fileOutput);
+			
+			
 			//Close the sequence file
 			fileOutput.close();		
 		}
-		catch(Exception IOException){
-			System.out.println("Error in the generation of the sequence file: "+ IOException.getMessage());
+		catch(Exception exception){
+			System.out.println("Error in the generation of the sequence file: "+ exception.getMessage());
 		}
 
-	
+		
+		
+		
 		
 		
 	}
+	
+	
+	
+
 	
 	
 	

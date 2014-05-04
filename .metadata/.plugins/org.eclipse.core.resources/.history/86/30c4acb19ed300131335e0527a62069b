@@ -1,0 +1,63 @@
+
+
+
+
+public class HDFSUploader {
+	
+	//Will be used to upload the files and generate the sequence file
+	sequenceUploader sUploader;
+	fileUploader fUploader;
+	
+
+	public void main(String[] args) {
+		if (args.length!=1){
+			System.out.println("Usage hdfsUploader Configuration/Configuration.json");
+		}
+		else
+		{
+			String configurationFile;
+			configurationFile=args[0];
+			
+			
+			//Read configuration
+			configuration conf = new configuration(configurationFile);
+			
+			
+			String inputCommonFolder=conf.get("Input Common Folder");
+			String inputClassifyFolder=conf.get("Input Classify Folder");
+			String processCommonFolder=conf.get("Process Common Folder");
+			String processClassifyFolder=conf.get("Process Classify Folder");
+			String outputCommonFolder=conf.get("Output Common Folder");
+			
+			//Move Files to Process
+			utils ut = new utils();
+			
+			ut.moveFiles(inputCommonFolder, processCommonFolder);
+			ut.moveFolder(inputClassifyFolder, processClassifyFolder);
+			
+			//Upload files to HDS
+			//Generate the sequence files
+			sUploader = new sequenceUploader();
+			sUploader.generateSequeceFileRecursive(inputCommonFolder,outputCommonFolder);
+			
+			
+			//fUploader = new fileUploader();
+		
+			//Move Files to Loaded
+			
+			
+			
+		
+			
+			
+			
+			
+			
+			
+			
+		}
+		
+
+	}
+
+}

@@ -22,10 +22,11 @@ public class utils {
 		
 		//Iterate for all the files of the input folder\
 		for (File file: listofFiles){
-			if (file.isFile() && file.getName().contains("ACK")){
+			if (file.isFile() && file.getName().indexOf("ACK")>=0){
 				
 				//Take the file name
 				currentFile=file.getName();
+
 				
 				//Create the file destination
 				fileDest = new File(destination+"/"+currentFile);
@@ -53,10 +54,12 @@ public class utils {
 		
 		//Iterate for all the files of the input folder\
 		for (File file: listofFiles){
-			if (file.isDirectory() && file.getName().contains("ACK")){
+			if (file.isDirectory() && file.getName().indexOf("ACK")>=0){
 				
 				//Take the file name
 				currentDir=file.getName();
+				
+				
 				
 				//Create the file destination
 				fileDest = new File(destination+"/"+currentDir);

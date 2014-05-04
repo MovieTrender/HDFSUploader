@@ -70,7 +70,7 @@ public class fileUploader {
 	 *		@desc Read all the files in the folder and upload them to HDFS
 	 * 	
 	 */
-	public fileUploader(String inputFolder, String outputFolder){
+	public void fileUploader(String inputFolder, String outputFolder){
 		
 		//Reset content
 		content="";

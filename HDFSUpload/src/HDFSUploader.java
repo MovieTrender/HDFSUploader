@@ -1,11 +1,17 @@
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+
 
 
 
 public class HDFSUploader {
 	
 	//Will be used to upload the files and generate the sequence file
-	sequenceUploader sUploader;
+	static sequenceUploader sUploader;
 	fileUploader fUploader;
 	
 
@@ -18,22 +24,45 @@ public class HDFSUploader {
 			String configurationFile;
 			configurationFile=args[0];
 			
-			configuration conf = new configuration(configurationFile);
-	
-			//Move Files to Process
 			
-			//sUploader = new sequenceUploader();
-			//fUploader = new fileUploader();
+			//Read configuration
+			configuration conf = new configuration(configurationFile);
+			
+			
+			String inputCommonFolder=conf.get("Input Common Folder");
+			String inputClassifyFolder=conf.get("Input Classify Folder");
+			String processCommonFolder=conf.get("Process Common Folder");
+			String processClassifyFolder=conf.get("Process Classify Folder");
+			String loadedCommonFolder=conf.get("Loaded Common Folder");
+			String loadedClassifyFolder= conf.get("Loaded Classify Folder");
+			String outputCommonFolder=conf.get("Output Common Folder");
+			String outputClassifyFolder=conf.get("Output Classify Folder");
+			
+			//Move Files to Process
+			utils ut = new utils();
+			
+			ut.moveFiles(inputCommonFolder, processCommonFolder);
+			ut.moveFolder(inputClassifyFolder, processClassifyFolder);
+			
+			//Upload files to HDS
+			//Generate the sequence files
+			DateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
+			Date today = Calendar.getInstance().getTime();
+			String tmstampFile = df.format(today);
+			String sequenceFile = outputClassifyFolder+"/"+tmstampFile;
+			
+			
+			sUploader = new sequenceUploader();
+			sUploader.generateSequeceFileRecursive(inputClassifyFolder,sequenceFile);
+			
+			
+			//Upload the files to HDFS
+			fileUploader fu = new fileUploader();
+			fu.fileUploader(inputCommonFolder,outputCommonFolder);
 		
 			//Move Files to Loaded
-			
-			
-			
-		
-			
-			
-			
-			
+			ut.moveFiles(processCommonFolder,loadedCommonFolder);
+			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
 			
 			
 			

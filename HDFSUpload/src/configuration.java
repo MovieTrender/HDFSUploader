@@ -8,48 +8,22 @@ import org.json.simple.parser.ParseException;
 
 
 
+
 public class configuration {
 	
-	//Configuration variables
-	String inputFolder;
-	String processFolder;
-	String loadedFolder;
-	String HDFScommonFolder;
-	String HDFSclassifyFolder;
+	JSONParser parser;
+	JSONObject jsonObject;
+	Object obj;
 	
-
-	
-
 	public configuration(String configurationFile){
-		
-		//Create the parser to be used
-		JSONParser parser = new JSONParser();
-		 
+		parser = new JSONParser();
 		try {
-			
+					
 			//Open the file and read all the configuration values
-			Object obj = parser.parse(new FileReader(configurationFile));
-	 
-			JSONObject jsonObject = (JSONObject) obj;
-	 
-			
-			
-			inputFolder = (String) jsonObject.get("Input Folder");
-			processFolder = (String) jsonObject.get("Process Folder");
-			loadedFolder = (String) jsonObject.get("Loaded Folder");
-			HDFScommonFolder = (String) jsonObject.get("Output Common Folder");
-			HDFSclassifyFolder = (String) jsonObject.get("Output Classify Folder"); 
-			
-			
-			System.out.println("Configuration readed: ");
-			System.out.println("\t Input Folder: "+inputFolder);
-			System.out.println("\t Process Folder: "+processFolder);
-			System.out.println("\t Loaded Folder: "+ loadedFolder);
-			System.out.println("\t HDFS Common Folder: "+HDFScommonFolder);
-			System.out.println("\t HDFS Classify Folder: "+HDFSclassifyFolder);
-	 
-			
-	 
+			obj = parser.parse(new FileReader(configurationFile));
+			 
+			jsonObject = (JSONObject) obj;
+			 	 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -58,31 +32,41 @@ public class configuration {
 			e.printStackTrace();
 		}
 	 
-	}
-	
-	
-	
-	public String getInputFolder(){
-		return inputFolder;
+		
 		
 	}
-	
-	public String getProcessFolder(){
-		return processFolder;
+
+
+	public String get(String configurationValue){
+		
+		String value;
+		try{
+
+			value= (String) jsonObject.get(configurationValue);
+		
+		}catch (Exception e){
+
+			value=null;
+			
+		}
+		
+		
+		return value;
+	 
 	}
 	
-	public String getLoadedFolder(){
-		return loadedFolder;
+	
+	public void printConfigurationValue(String configurationValue){
+		String value;
+		value = get(configurationValue);
+		
+		System.out.println(configurationValue+" :  "+value);
 	}
 	
-	public String getHDFSCommonFolder(){
-		return HDFScommonFolder;
-	}
 	
-	public String getHDFSclassifyFolder(){
-		return HDFSclassifyFolder;
-	}
 	
+	
+
 	
 
 }
