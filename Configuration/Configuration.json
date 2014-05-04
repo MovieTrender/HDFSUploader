@@ -1,10 +1,10 @@
 {
 	"Input Classify Folder": "/mnt/twitterLayer/TwitterLayer/Classify",
 	"Input Common Folder": "/mnt/twitterLayer/TwitterLayer/Data",
-	"Process Classify Folder":"/mnt/twitterLayer/HDFSUpload/Process/Classify",
-	"Process Common Folder":"/mnt/twitterLayer/HDFSUpload/Process/Data",
-	"Loaded Common Folder":"/mnt/twitterLayer/HDFSUpload/Loaded/Data",
-	"Loaded Classify Folder":"/mnt/twitterLayer/HDFSUpload/Classify",
+	"Process Classify Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Process/Classify",
+	"Process Common Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Process/Data",
+	"Loaded Common Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Loaded/Data",
+	"Loaded Classify Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Classify",
 	"Output Classify Folder":"/user/hadoop/incoming/tweetsToClassify",
 	"Output Common Folder":"/user/hadoop/incoming/tweets"
 }
