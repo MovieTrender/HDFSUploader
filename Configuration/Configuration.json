@@ -4,7 +4,7 @@
 	"Process Classify Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Process/Classify",
 	"Process Common Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Process/Data",
 	"Loaded Common Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Loaded/Data",
-	"Loaded Classify Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Classify",
+	"Loaded Classify Folder":"/mnt/twitterLayer/HDFSUpload/HDFSUploader/Loaded/Classify",
 	"Output Classify Folder":"/user/hadoop/incoming/tweetsToClassify",
 	"Output Common Folder":"/user/hadoop/incoming/tweets"
 }
