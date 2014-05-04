@@ -80,7 +80,7 @@ public class utils {
 				
 					fileDest=new File(destination+"/"+file.getName()); 
 					
-					FileUtils.copyDirectory(file, fileDest);
+					FileUtils.moveDirectory(file, fileDest);
 				
 			
 				}catch (Exception e){
