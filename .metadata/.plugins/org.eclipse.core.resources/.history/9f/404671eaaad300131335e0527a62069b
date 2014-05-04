@@ -52,7 +52,7 @@ public class utils {
 	}
 	
 	
-	public void moveFolder(String source, String destination){
+	public void moveFolder(String source, String destination) throws IOException{
 		
 		//Folder to create
 		File fileDest;
@@ -71,20 +71,14 @@ public class utils {
 				//Take the file name
 				currentDir=file.getName();
 				
-				try{
-					//Change access in folder.
-					Process p =Runtime.getRuntime().exec("cudo chmod -R 777 "+file.getAbsolutePath());
+				//Change access in folder.
+				Process p =Runtime.getRuntime().exec("cudo chmod -R 777 "+file.getAbsolutePath());
 				
 				
-					//Create the file destination
-					fileDest = new File(destination+"/"+currentDir);
+				//Create the file destination
+				fileDest = new File(destination+"/"+currentDir);
 				
-					file.renameTo(fileDest);
-			
-				}catch (Exception e){
-					System.out.println(e.getMessage());
-				}
-				
+				file.renameTo(fileDest);
 			}
 		}
 	

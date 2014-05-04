@@ -9,7 +9,7 @@ public class utils {
 	
 	
 
-	public void moveFiles(String source, String destination){
+	public void moveFiles(String source, String destination) throws IOException{
 		
 		//File to create
 		File fileDest;
@@ -28,22 +28,13 @@ public class utils {
 				//Take the file name
 				currentFile=file.getName();
 				
-			
-				try{
-					//Change access in the file
-					
-					Process p =Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
-					
-					//Create the file destination
-					fileDest = new File(destination+"/"+currentFile);
-					
-					file.renameTo(fileDest);
-					
-				}catch(Exception e){
-					System.out.println(e.getMessage());
-				}
+				//Change access in file.
+				Process p =Runtime.getRuntime().exec("sudo chmod -r 777 "+file.getAbsolutePath());
 				
-			
+				//Create the file destination
+				fileDest = new File(destination+"/"+currentFile);
+				
+				file.renameTo(fileDest);
 			}
 		}
 	
@@ -71,20 +62,14 @@ public class utils {
 				//Take the file name
 				currentDir=file.getName();
 				
-				try{
-					//Change access in folder.
-					Process p =Runtime.getRuntime().exec("cudo chmod -R 777 "+file.getAbsolutePath());
+				//Change access in folder.
+				Process p =Runtime.getRuntime().exec("cudo chmod -r 777 "+file.getAbsolutePath());
 				
 				
-					//Create the file destination
-					fileDest = new File(destination+"/"+currentDir);
+				//Create the file destination
+				fileDest = new File(destination+"/"+currentDir);
 				
-					file.renameTo(fileDest);
-			
-				}catch (Exception e){
-					System.out.println(e.getMessage());
-				}
-				
+				file.renameTo(fileDest);
 			}
 		}
 	
