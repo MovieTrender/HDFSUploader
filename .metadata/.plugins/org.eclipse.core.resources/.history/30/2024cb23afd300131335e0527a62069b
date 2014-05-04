@@ -36,7 +36,7 @@ public class utils {
 				try{
 					//Change access in the file
 					
-					Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
+					Process p =Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
 					
 					//Create the file destination
 					fileDest = new File(destination+"/"+currentFile);
@@ -63,7 +63,9 @@ public class utils {
 		
 		//Source folder to move
 		Path fileSource;
-
+		
+		//Folder to move
+		String currentDir;
 		
 		//Open the folder and take all the folders inside
 		File folder = new File(source);
@@ -74,10 +76,12 @@ public class utils {
 		for (File file: listofFiles){
 			if (file.isDirectory() && file.getName().indexOf("ACK")>=0){
 				
+				//Take the file name
+				currentDir=file.getName();
 				
 				try{
 					//Change access in folder.
-					Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
+					Process p =Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
 				
 					fileSource = FileSystems.getDefault().getPath(file.getAbsolutePath());
 					fileDest=FileSystems.getDefault().getPath(destination+"/"+file.getName()); 
