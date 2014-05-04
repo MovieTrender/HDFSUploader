@@ -26,11 +26,7 @@ public class utils {
 				
 				//Take the file name
 				currentFile=file.getName();
-				
-				//Change access in folder.
-				file.setReadable(true);
-				file.setExecutable(true);
-				file.setWritable(true);
+
 				
 				//Create the file destination
 				fileDest = new File(destination+"/"+currentFile);
@@ -63,10 +59,7 @@ public class utils {
 				//Take the file name
 				currentDir=file.getName();
 				
-				//Change access in folder.
-				file.setReadable(true);
-				file.setExecutable(true);
-				file.setWritable(true);
+				
 				
 				//Create the file destination
 				fileDest = new File(destination+"/"+currentDir);
