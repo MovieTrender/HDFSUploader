@@ -73,7 +73,7 @@ public class utils {
 				
 				try{
 					//Change access in folder.
-					Process p =Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
+					Process p =Runtime.getRuntime().exec("cudo chmod -R 777 "+file.getAbsolutePath());
 				
 				
 					//Create the file destination
