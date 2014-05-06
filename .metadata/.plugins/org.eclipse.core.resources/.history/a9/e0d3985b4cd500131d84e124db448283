@@ -52,7 +52,7 @@ public class HDFSUploader {
 			String outputClassifyFolder=conf.get("Output Classify Folder");
 			
 			//Move Files to Process
-			System.out.println("Start moving files");
+			System.out.println("Start processing files");
 			
 			utils ut = new utils();
 			
