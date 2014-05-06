@@ -59,8 +59,6 @@ public class HDFSUploader {
 			//Upload the files to HDFS
 			fileUploader fu = new fileUploader();
 			fu.fileUploader(processCommonFolder,outputCommonFolder);
-			
-			fu.close();
 		
 			//Move Files to Loaded
 //			ut.moveFiles(processCommonFolder,loadedCommonFolder);

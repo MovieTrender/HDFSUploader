@@ -62,22 +62,6 @@ public class fileUploader {
 		
 	}
 	
-	/*
-	 *		public void fileClose
-	 *
-	 *		@desc Free the resources allocates for the process
-	 * 	
-	 */
-	public void close(){
-	
-		try{
-			//close the filesystem
-			fs.close();
-		}catch (Exception e){
-			System.out.println("Exception closing the file system: "+ e.getMessage());
-		}
-	}
-	
 	
 	/*
 	 *		public void fileUploader
@@ -115,7 +99,7 @@ public class fileUploader {
 			
 					fs.copyFromLocalFile(srcPath, dstPath);
 					System.out.println("File " + file.getName() + "copied to " + outputFolder);
-					
+					fs.close();
 					
 				}catch(Exception e){
 					System.out.println("Exception caught! :" + e);
@@ -123,9 +107,9 @@ public class fileUploader {
 
 			}
 			
+			
+		
 		}
-		
-		
 	
 
 	}

@@ -68,7 +68,7 @@ public class fileUploader {
 	 *		@desc Free the resources allocates for the process
 	 * 	
 	 */
-	public void close(){
+	public void fileClose(){
 	
 		try{
 			//close the filesystem
