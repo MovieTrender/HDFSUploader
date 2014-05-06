@@ -114,7 +114,7 @@ public class fileUploader {
 					
 			
 					fs.copyFromLocalFile(srcPath, dstPath);
-					System.out.println("File " + file.getName() + "copied to " + outputFolder);
+					System.out.println("File " + file.getName() + " copied to " + outputFolder);
 					
 					
 				}catch(Exception e){

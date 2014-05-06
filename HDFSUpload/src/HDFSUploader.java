@@ -55,7 +55,7 @@ public class HDFSUploader {
 //			sUploader = new sequenceUploader();
 //			sUploader.generateSequeceFileRecursive(processClassifyFolder,sequenceFile);
 			
-			System.out.println("Uploading files to HDFS");
+//			System.out.println("Uploading files to HDFS");
 			//Upload the files to HDFS
 //			fileUploader fu = new fileUploader();
 //			fu.fileUploader(processCommonFolder,outputCommonFolder);
