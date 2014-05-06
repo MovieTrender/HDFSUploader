@@ -87,7 +87,7 @@ public class fileUploader {
 				try{
 					
 					Path srcPath = new Path(file.getAbsolutePath());
-					Path dstPath = new Path(outputFolder);
+					Path dstPath = new Path(outputFolder+"/"+file.getName());
 					
 					// Check if the file already exists
 					if (!(fs.exists(dstPath))) {
