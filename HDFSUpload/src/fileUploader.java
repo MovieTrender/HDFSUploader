@@ -1,21 +1,11 @@
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
- 
+
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.BlockLocation;
-import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.hdfs.DistributedFileSystem;
-import org.apache.hadoop.hdfs.protocol.DatanodeInfo;
+
 
 
 
@@ -23,6 +13,7 @@ import org.apache.hadoop.hdfs.protocol.DatanodeInfo;
  *		Class fileUploader
  * 
  *		@desc Reads all the files in <<InputFolder>> and uploads them to HDS in <<OutputFolder>>
+ *
  *		@author Vicente Ruben Del Pino Ruiz <<ruben.delpino@gmail.com>>
  *
  */
@@ -44,7 +35,7 @@ public class fileUploader {
 	
 	
 	/*
-	 * 		public fileUploader()
+	 * 		public fileUploader
 	 * 
 	 * 		@desc Reads the configuration from the cluster and setup FileSystem
 	 * 
@@ -57,7 +48,7 @@ public class fileUploader {
 			fs = FileSystem.get(conf);
 		}
 		catch (Exception IOException){
-			System.out.println("Error reading configuration from cluster and setting Filesystem: "+IOException.getMessage());
+			System.err.println("Error reading configuration from cluster and setting Filesystem: "+IOException.getMessage());
 		}
 		
 	}
@@ -71,31 +62,32 @@ public class fileUploader {
 	public void close(){
 	
 		try{
-			//close the filesystem
+			//close the file system
 			fs.close();
 		}catch (Exception e){
-			System.out.println("Exception closing the file system: "+ e.getMessage());
+			System.err.println("Exception closing the file system: "+ e.getMessage());
 		}
 	}
 	
 	
 	/*
-	 *		public void fileUploader
+	 *		public void fileUpload
+	 *
+	 *	    @desc Read all the files in the folder and upload them to HDFS
 	 *
 	 *		@param String inputFolder.   Input folder with all the files to upload to HDFS
 	 *		@param String outputFolder.  Folder in HDFS where upload the files
 	 *
-	 *		@desc Read all the files in the folder and upload them to HDFS
-	 * 	
 	 */
-	public void fileUploader(String inputFolder, String outputFolder){
+	
+	public void fileUpload(String inputFolder, String outputFolder){
 		
 		//Open the folder and take all the files inside
 		File folder = new File(inputFolder);
 		File [] listofFiles= folder.listFiles();
 		
 		
-		//Iterate for all the files of the input folder\
+		//Iterate for all the files of the input folder
 		for (File file: listofFiles){
 			if (file.isFile()){
 				
@@ -107,18 +99,18 @@ public class fileUploader {
 					
 					// Check if the file already exists
 					if (!(fs.exists(dstPath))) {
-						System.out.println("No such destination " + dstPath);
+						System.err.println("No such destination " + dstPath);
 						return;
 					}
 	 
 					
 			
 					fs.copyFromLocalFile(srcPath, dstPath);
-					System.out.println("File " + file.getName() + " copied to " + outputFolder);
+					System.out.println("/t File " + file.getName() + " copied to " + outputFolder);
 					
 					
 				}catch(Exception e){
-					System.out.println("Exception caught! :" + e);
+					System.err.println("Error in fileUpload :" + e);
 				}
 
 			}

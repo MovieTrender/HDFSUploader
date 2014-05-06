@@ -1,18 +1,29 @@
 
 import java.io.File;
+
 import org.apache.commons.io.FileUtils;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 
-
-
+/*
+ *		Class utils
+ * 
+ *		@desc utilities for HDFSUploader process
+ *
+ *		@author Vicente Ruben Del Pino Ruiz <<ruben.delpino@gmail.com>>
+ *
+ */
 public class utils {
 	
 	
-
+	/*
+	 * 		public void moveFiles
+	 * 
+	 * 		@desc Move files from source to destination
+	 * 
+	 * 		@param String source. Source folder with all the files to move.
+	 * 		@param String destination. Destination folder where move the files.
+	 * 
+	 */
 	public void moveFiles(String source, String destination){
 		
 		//File to create
@@ -43,11 +54,11 @@ public class utils {
 					//Rename the file
 					file.renameTo(fileDest);
 					
-					System.out.println("Copy file from "+file.getAbsolutePath()+"  to   "+ fileDest.getAbsolutePath());
+					System.out.println("\t Copy file from "+file.getAbsolutePath()+"  to   "+ fileDest.getAbsolutePath());
 					
 					
 				}catch(Exception e){
-					System.out.println(e.getMessage());
+					System.err.println("Error moving files "+ e.getMessage());
 				}
 				
 			
@@ -58,7 +69,15 @@ public class utils {
 		
 	}
 	
-	
+	/*
+	 * 		public void moveFolder
+	 * 
+	 * 		@desc Move folder from source to destination
+	 * 
+	 * 		@param String source. Source folder to move.
+	 * 		@param String destination. Destination folder where move the source folder.
+	 * 
+	 */
 	public void moveFolder(String source, String destination){
 		
 		//Folder to create
@@ -82,7 +101,7 @@ public class utils {
 					Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
 				
 				
-					System.out.println("Move folder from "+file.getAbsolutePath()+"  to   "+destination+"/"+file.getName() );
+					System.err.println("\t Move folder from "+file.getAbsolutePath()+"  to   "+destination+"/"+file.getName() );
 					
 					
 					//Move the directory and all its content
@@ -91,7 +110,7 @@ public class utils {
 					FileUtils.deleteDirectory(file);
 			
 				}catch (Exception e){
-					System.out.println(e.getMessage());
+					System.err.println("Error moving the folder: "+e.getMessage());
 				}
 				
 			}

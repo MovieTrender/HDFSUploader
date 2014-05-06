@@ -15,6 +15,7 @@ import java.io.IOException;
  *		Class sequenceUploader
  * 
  *		@desc Reads all the files in <<InputFolder>> and generates a sequence file in HDFS in <<OutputFile>>
+ *
  *		@author Vicente Ruben Del Pino Ruiz <<ruben.delpino@gmail.com>>
  *
  */
@@ -42,11 +43,20 @@ public class sequenceUploader {
 			fs = FileSystem.get(conf);
 		}
 		catch (Exception IOException){
-			System.out.println("Error reading configuration from cluster and setting Filesystem: "+IOException.getMessage());
+			System.err.println("Error reading configuration from cluster and setting Filesystem: "+IOException.getMessage());
 		}
 	}
 	
-	
+	/*
+	 * 		public void appendSequenceFile
+	 * 
+	 * 		@desc Appends a file to the sequence file opened in HDFS
+	 * 
+	 * 		@param File folder. Folder where is placed the file
+	 * 		@param File file.   File to append to the sequence file in HDFS
+	 * 		@param SequenceFile.Writer fileOutput.	Writer to sequence file where will be append the information from file.
+	 * 
+	 */	
 	private void appendSequenceFile(File folder, File file, SequenceFile.Writer fileOutput ) throws FileNotFoundException, IOException{
 		//Variables needed for reading the files in the folder
 		String currentFile;
@@ -68,8 +78,7 @@ public class sequenceUploader {
 		fileReader =new FileReader(folder.getAbsolutePath()+"/"+currentFile);
 		bufferedReader = new BufferedReader(fileReader);
 		
-		content="";
-		
+			
 		while (bufferedReader.ready()){
 			content+=bufferedReader.readLine();
 		}
@@ -81,9 +90,20 @@ public class sequenceUploader {
 		//Append the key value to the file
 		fileOutput.append(key,value);
 		
+		//Free resources and connections
+		bufferedReader.close();
+		
 	}
 	
-	
+	/*
+	 * 		public void iterateFolder
+	 * 
+	 * 		@desc Iterates through a folder recursively and call appendSequenceFile for any file found
+	 * 
+	 * 		@param File iFolder. Folder to inspect.
+	 * 		@param SequenceFile.Writer fileOutput.	Writer to sequence file where will be append the information from files found.
+	 * 
+	 */	
 	private void iterateFolder(File iFolder, SequenceFile.Writer fileOutput ) throws FileNotFoundException, IOException{
 		
 		//Open the folder and take all the files inside
@@ -93,11 +113,11 @@ public class sequenceUploader {
 		//Iterate for all the files of the input folder\
 		for (File file: listofFiles){
 			if (file.isFile()){
-System.out.println("Extracting file: "+file.getAbsolutePath());
+				System.out.println("\t Extracting file: "+file.getAbsolutePath());
 				appendSequenceFile(iFolder,file,fileOutput);
 			}
 			if (file.isDirectory()){
-System.out.println("Opening Folder: "+iFolder.getAbsolutePath());
+				System.out.println("\t Opening Folder: "+iFolder.getAbsolutePath());
 				iterateFolder(file,fileOutput);
 			}
 		}
@@ -105,8 +125,20 @@ System.out.println("Opening Folder: "+iFolder.getAbsolutePath());
 		
 	}
 	
-
-	public void generateSequeceFileRecursive(String iFolder, String oFile){
+	
+	
+	/*
+	 * 		public void generateSequenceFileRecursive
+	 * 
+	 * 		@desc Opens iFolder and iterates recursively through all folders and files inside.
+	 * 			  Will merge all files found in a sequence file, this sequence file will be created in HDFS in oFile
+	 * 
+	 * 		@param String iFolder. Folder to inspect.
+	 * 		@param String oFile.   Sequence file to generate in HDFS (path is a HDFS path, not local filesystem!)
+	 * 
+	 */	
+	public void generateSequenceFileRecursive(String iFolder, String oFile){
+		
 		//Input Folder and output file to generate
 		String inputFolder;
 		String outputFile;
@@ -119,17 +151,16 @@ System.out.println("Opening Folder: "+iFolder.getAbsolutePath());
 			outputFile = oFile;
 			
 
-			
 			//Open the folder and take all the files inside
 			File folder = new File(inputFolder);
 			
-System.out.println("OpeningFile");			
+		
 			//Open the sequence file
 			Path outputPath = new Path(outputFile);
 			@SuppressWarnings("deprecation")
 			SequenceFile.Writer fileOutput = new SequenceFile.Writer(fs, conf, outputPath, org.apache.hadoop.io.Text.class, org.apache.hadoop.io.Text.class);
 			
-System.out.println("Iterating folder");			
+	
 			iterateFolder(folder, fileOutput);
 			
 			
@@ -137,7 +168,7 @@ System.out.println("Iterating folder");
 			fileOutput.close();		
 		}
 		catch(Exception exception){
-			System.out.println("Error in the generation of the sequence file: "+ exception.getMessage());
+			System.err.println("Error in the generation of the sequence file: "+ exception.getMessage());
 		}
 
 		

@@ -8,13 +8,31 @@ import org.json.simple.parser.ParseException;
 
 
 
-
+/*
+ *		Class configuration
+ * 
+ *		@desc Reads the configuration from a JSON file and export the data to variables
+ *
+ *		@author Vicente Ruben Del Pino Ruiz <<ruben.delpino@gmail.com>>
+ *
+ */
 public class configuration {
 	
+	//Variables for reading the JSON file
 	JSONParser parser;
 	JSONObject jsonObject;
 	Object obj;
 	
+	
+	
+	/*
+	 * 		public configuration
+	 * 
+	 * 		@desc Open the JSON file in configurationFile
+	 * 
+	 * 		@param String configurationFile. Path to the configuration file to read.
+	 * 
+	 */
 	public configuration(String configurationFile){
 		parser = new JSONParser();
 		try {
@@ -25,11 +43,11 @@ public class configuration {
 			jsonObject = (JSONObject) obj;
 			 	 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.err.println("Exception reading configuration: "+ e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("Exception reading configuration: "+ e.getMessage());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.err.println("Exception parsing JSON file: "+ e.getMessage());
 		}
 	 
 		
@@ -37,6 +55,15 @@ public class configuration {
 	}
 
 
+	/*
+	 * 		public String get
+	 * 
+	 * 		@desc Return the configuration value in JSON file for the key configurationValue
+	 * 
+	 * 		@param String configurationFile. Key to the value to read and return.
+	 * 		@return String value. Value for the key in configurationValue
+	 * 
+	 */
 	public String get(String configurationValue){
 		
 		String value;
@@ -45,9 +72,9 @@ public class configuration {
 			value= (String) jsonObject.get(configurationValue);
 		
 		}catch (Exception e){
-
-			value=null;
 			
+			value=null;
+			System.err.println("Error reading configuration value: "+ e.getMessage());
 		}
 		
 		
@@ -55,7 +82,14 @@ public class configuration {
 	 
 	}
 	
-	
+	/*
+	 * 		public void printConfigurationValue
+	 * 
+	 * 		@desc Print the configuration value in JSON file for the key configurationValue
+	 * 
+	 * 		@param String configurationFile. Key to the value to read and return.
+	 * 
+	 */
 	public void printConfigurationValue(String configurationValue){
 		String value;
 		value = get(configurationValue);

@@ -7,7 +7,18 @@ import java.util.Date;
 
 
 
-
+/*
+ *		Class HDFSUploader
+ * 
+ *		@desc Main class of HDFSUploader. Process files downloaded from twitter and uploads them to HDFS.
+ *			  Process is the following:
+ *					-Move files from Source to Process folder
+ *					-Upload files to HDFS (generate sequence file to classify and upload single files)
+ *					-Move files to Historic folder
+ *
+ *		@author Vicente Ruben Del Pino Ruiz <<ruben.delpino@gmail.com>>
+ *
+ */
 public class HDFSUploader {
 	
 	//Will be used to upload the files and generate the sequence file
@@ -17,10 +28,11 @@ public class HDFSUploader {
 
 	public static void main(String[] args) {
 		if (args.length!=1){
-			System.out.println("Usage hdfsUploader Configuration/Configuration.json");
+			System.err.println("Usage is: hadoop jar HDFSUpload.jar Configuration/Configuration.json");
 		}
 		else
 		{
+			//Takes configuration file path
 			String configurationFile;
 			configurationFile=args[0];
 			
@@ -29,6 +41,7 @@ public class HDFSUploader {
 			configuration conf = new configuration(configurationFile);
 			
 			
+			//Take the configuration from configuration file
 			String inputCommonFolder=conf.get("Input Common Folder");
 			String inputClassifyFolder=conf.get("Input Classify Folder");
 			String processCommonFolder=conf.get("Process Common Folder");
@@ -39,30 +52,40 @@ public class HDFSUploader {
 			String outputClassifyFolder=conf.get("Output Classify Folder");
 			
 			//Move Files to Process
+			System.out.println("Start processing files");
+			
 			utils ut = new utils();
 			
-//			ut.moveFiles(inputCommonFolder, processCommonFolder);
-//			ut.moveFolder(inputClassifyFolder, processClassifyFolder);
+			ut.moveFiles(inputCommonFolder, processCommonFolder);
+			ut.moveFolder(inputClassifyFolder, processClassifyFolder);
 			
-			//Upload files to HDS
+			//Upload files to HDFS
+			System.out.println("Uploading files to HDFS");
+			
 			//Generate the sequence files
+			System.out.println("\t Generating sequence file");
+			
 			DateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
 			Date today = Calendar.getInstance().getTime();
 			String tmstampFile = df.format(today);
 			String sequenceFile = outputClassifyFolder+"/"+tmstampFile;
 			
-			//Generate sequence file
-//			sUploader = new sequenceUploader();
-//			sUploader.generateSequeceFileRecursive(processClassifyFolder,sequenceFile);
+		
+			sUploader = new sequenceUploader();
+			sUploader.generateSequenceFileRecursive(processClassifyFolder,sequenceFile);
 			
-//			System.out.println("Uploading files to HDFS");
+		
 			//Upload the files to HDFS
-//			fileUploader fu = new fileUploader();
-//			fu.fileUploader(processCommonFolder,outputCommonFolder);
+			System.out.println("\t Uploading single files to HDFS");
 			
-//			fu.close();
+			fileUploader fu = new fileUploader();
+			fu.fileUpload(processCommonFolder,outputCommonFolder);
+			
+			fu.close();
 		
 			//Move Files to Loaded
+			System.out.println("Move files to historic folder");
+			
 			ut.moveFiles(processCommonFolder,loadedCommonFolder);
 			ut.moveFolder(processClassifyFolder,loadedClassifyFolder);
 			

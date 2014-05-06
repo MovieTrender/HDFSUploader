@@ -1,0 +1,90 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+
+
+/*
+ *		Class configuration
+ * 
+ *		@desc Reads the configuration from a JSON file and export the data to variables
+ *
+ *		@author Vicente Ruben Del Pino Ruiz <<ruben.delpino@gmail.com>>
+ *
+ */
+public class configuration {
+	
+	//Variables for reading the JSON file
+	JSONParser parser;
+	JSONObject jsonObject;
+	Object obj;
+	
+	
+	
+	/*
+	 * 		public configuration
+	 * 
+	 * 		@desc Open the JSON file in configurationFile
+	 * 
+	 * 		@param String configurationFile. Path to the configuration file to read.
+	 * 
+	 */
+	public configuration(String configurationFile){
+		parser = new JSONParser();
+		try {
+					
+			//Open the file and read all the configuration values
+			obj = parser.parse(new FileReader(configurationFile));
+			 
+			jsonObject = (JSONObject) obj;
+			 	 
+		} catch (FileNotFoundException e) {
+			System.err.println("Exception reading configuration: "+ e.getMessage());
+		} catch (IOException e) {
+			System.err.println("Exception reading configuration: "+ e.getMessage());
+		} catch (ParseException e) {
+			System.err.println("Exception parsing JSON file: "+ e.getMessage());
+		}
+	 
+		
+		
+	}
+
+
+	public String get(String configurationValue){
+		
+		String value;
+		try{
+
+			value= (String) jsonObject.get(configurationValue);
+		
+		}catch (Exception e){
+
+			value=null;
+			
+		}
+		
+		
+		return value;
+	 
+	}
+	
+	
+	public void printConfigurationValue(String configurationValue){
+		String value;
+		value = get(configurationValue);
+		
+		System.out.println(configurationValue+" :  "+value);
+	}
+	
+	
+	
+	
+
+	
+
+}
