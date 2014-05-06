@@ -1,13 +1,21 @@
-
-
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+ 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.BlockLocation;
+import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.File;
+import org.apache.hadoop.hdfs.DistributedFileSystem;
+import org.apache.hadoop.hdfs.protocol.DatanodeInfo;
 
 
 
@@ -26,12 +34,6 @@ public class fileUploader {
 	Configuration conf;
 	FileSystem fs;
 	
-	
-	//Variables needed for reading the files in the folder
-	String currentFile;
-	FileReader fileReader;
-	BufferedReader bufferedReader;
-	String content;
 	
 	
 	//Variables needed for writing files in HDFS
@@ -72,10 +74,6 @@ public class fileUploader {
 	 */
 	public void fileUploader(String inputFolder, String outputFolder){
 		
-		//Reset content
-		content="";
-		
-		
 		//Open the folder and take all the files inside
 		File folder = new File(inputFolder);
 		File [] listofFiles= folder.listFiles();
@@ -85,46 +83,32 @@ public class fileUploader {
 		for (File file: listofFiles){
 			if (file.isFile()){
 				
+
 				try{
 					
-					//Read the file 
-					currentFile=file.getName();
-					fileReader =new FileReader(folder.getAbsolutePath()+"/"+currentFile);
-					bufferedReader = new BufferedReader(fileReader);
-					
-					content="";
-					
-					while (bufferedReader.ready()){
-						content+=bufferedReader.readLine();
-					}
-					
-					
-					//Write the content of the file to HDFS
-			
+					Path srcPath = new Path(file.getAbsolutePath());
+					Path dstPath = new Path(outputFolder+"/"+file.getName());
 					
 					// Check if the file already exists
-				    path = new Path(outputFolder+"/"+currentFile);
-				    if (fs.exists(path)) {
-				        System.out.println("File " + currentFile + " already exists");
-				        return;
-				    }
-				
-				    // Create a new file and write data to it.
-				    out = fs.create(path);
-				    out.writeUTF(content);
+					if (!(fs.exists(dstPath))) {
+						System.out.println("No such destination " + dstPath);
+						return;
+					}
+	 
 					
-				    //Close the file in HDFS
-				    out.close();
+			
+					fs.copyFromLocalFile(srcPath, dstPath);
+					System.out.println("File " + file.getName() + "copied to " + outputFolder);
+					fs.close();
 					
-				    //Close the file in local folder
-				    fileReader.close();
-					
+				}catch(Exception e){
+					System.out.println("Exception caught! :" + e);
 				}
-				catch (Exception FileNotFoundException) {
-					System.out.println("File not found: "+ FileNotFoundException.getMessage());
-					
-				}
+
 			}
+			
+			
+		
 		}
 	
 
