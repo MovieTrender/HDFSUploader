@@ -28,7 +28,7 @@ public class HDFSUploader {
 
 	public static void main(String[] args) {
 		if (args.length!=1){
-			System.err.println("Usage is: hadoop jar HDFSUpload.jar Configuration/Configuration.json");
+			System.out.println("Usage is: hadoop jar HDFSUpload.jar Configuration/Configuration.json");
 		}
 		else
 		{

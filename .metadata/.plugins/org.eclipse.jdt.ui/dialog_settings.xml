@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="/Users/ruben/Cursos/Harvard/2014/HW12/Software/commons-io-2.4" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="/Users/ruben/Cursos/Harvard/2014/HW6/Material/Problem2_2/hadoop-2.0.0-cdh4.6.0/share/hadoop/hdfs" key="org.eclipse.jdt.ui.lastextjar"/>
 	<section name="OptionalMessageDialog.hide.">
 		<item value="true" key="RunnableJar.export.ipwarning"/>
 		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>

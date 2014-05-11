@@ -1,0 +1,189 @@
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.SequenceFile;
+import org.apache.hadoop.io.Text;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+
+/*
+ *		Class sequenceUploader
+ * 
+ *		@desc Reads all the files in <<InputFolder>> and generates a sequence file in HDFS in <<OutputFile>>
+ *
+ *		@author Vicente Ruben Del Pino Ruiz <<ruben.delpino@gmail.com>>
+ *
+ */
+public class sequenceUploader {
+	
+
+	
+	//Cluster configuration 
+	Configuration conf;
+	FileSystem fs;
+	
+
+	
+	/*
+	 * 		public sequenceUploader
+	 * 
+	 * 		@desc Reads the configuration from the cluster and setup FileSystem
+	 * 
+	 */	
+	public sequenceUploader(){
+		
+		try{
+			//Open configuration for cluster
+			conf= new Configuration();
+			fs = FileSystem.get(conf);
+		}
+		catch (Exception IOException){
+			System.err.println("Error reading configuration from cluster and setting Filesystem: "+IOException.getMessage());
+		}
+	}
+	
+	/*
+	 * 		public void appendSequenceFile
+	 * 
+	 * 		@desc Appends a file to the sequence file opened in HDFS
+	 * 
+	 * 		@param File folder. Folder where is placed the file
+	 * 		@param File file.   File to append to the sequence file in HDFS
+	 * 		@param SequenceFile.Writer fileOutput.	Writer to sequence file where will be append the information from file.
+	 * 
+	 */	
+	private void appendSequenceFile(File folder, File file, SequenceFile.Writer fileOutput ) throws FileNotFoundException, IOException{
+		//Variables needed for reading the files in the folder
+		String currentFile;
+		FileReader fileReader;
+		BufferedReader bufferedReader;
+		String content;
+		
+		
+		
+		//Reset content
+		content="";
+		
+		//Key and value to be written in the file
+		Text key = new Text();
+		Text value = new Text();
+		
+		//Read the file 
+		currentFile=file.getName();
+		fileReader =new FileReader(folder.getAbsolutePath()+"/"+currentFile);
+		bufferedReader = new BufferedReader(fileReader);
+		
+			
+		while (bufferedReader.ready()){
+			content+=bufferedReader.readLine();
+		}
+		
+		
+		//Write the content of the file to the sequence file
+		key =new Text(currentFile);
+		value=new Text(content);
+		//Append the key value to the file
+		fileOutput.append(key,value);
+		
+		//Free resources and connections
+		bufferedReader.close();
+		
+	}
+	
+	/*
+	 * 		public void iterateFolder
+	 * 
+	 * 		@desc Iterates through a folder recursively and call appendSequenceFile for any file found
+	 * 
+	 * 		@param File iFolder. Folder to inspect.
+	 * 		@param SequenceFile.Writer fileOutput.	Writer to sequence file where will be append the information from files found.
+	 * 
+	 */	
+	private void iterateFolder(File iFolder, SequenceFile.Writer fileOutput ) throws FileNotFoundException, IOException{
+		
+		//Open the folder and take all the files inside
+		File [] listofFiles= iFolder.listFiles();
+		
+		
+		//Iterate for all the files of the input folder\
+		for (File file: listofFiles){
+			if (file.isFile()){
+				System.out.println("\t Extracting file: "+file.getAbsolutePath());
+				appendSequenceFile(iFolder,file,fileOutput);
+			}
+			if (file.isDirectory()){
+				System.out.println("\t Opening Folder: "+iFolder.getAbsolutePath());
+				iterateFolder(file,fileOutput);
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	/*
+	 * 		public void generateSequenceFileRecursive
+	 * 
+	 * 		@desc Opens iFolder and iterates recursively through all folders and files inside.
+	 * 			  Will merge all files found in a sequence file, this sequence file will be created in HDFS in oFile
+	 * 
+	 * 		@param String iFolder. Folder to inspect.
+	 * 		@param String oFile.   Sequence file to generate in HDFS (path is a HDFS path, not local filesystem!)
+	 * 
+	 */	
+	public void generateSequenceFileRecursive(String iFolder, String oFile){
+		
+		//Input Folder and output file to generate
+		String inputFolder;
+		String outputFile;
+		
+		
+		try{
+			
+			//Setup the local variables
+			inputFolder = iFolder;
+			outputFile = oFile;
+			
+
+			//Open the folder and take all the files inside
+			File folder = new File(inputFolder);
+			
+		
+			//Open the sequence file
+			Path outputPath = new Path(outputFile);
+			@SuppressWarnings("deprecation")
+			SequenceFile.Writer fileOutput = new SequenceFile.Writer(fs, conf, outputPath, org.apache.hadoop.io.Text.class, org.apache.hadoop.io.Text.class);
+			
+	
+			iterateFolder(folder, fileOutput);
+			
+			
+			//Close the sequence file
+			fileOutput.close();		
+		}
+		catch(Exception exception){
+			System.err.println("Error in the generation of the sequence file: "+ exception.getMessage());
+		}
+
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+
+	
+	
+	
+	
+
+}

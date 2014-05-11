@@ -99,7 +99,7 @@ public class fileUploader {
 					
 					// Check if the file already exists
 					if (!(fs.exists(dstPath))) {
-						System.err.println("No such destination " + dstPath);
+						System.out.println("No such destination " + dstPath);
 						return;
 					}
 	 

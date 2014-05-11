@@ -101,7 +101,7 @@ public class utils {
 					Runtime.getRuntime().exec("sudo chmod -R 777 "+file.getAbsolutePath());
 				
 				
-					System.err.println("\t Move folder from "+file.getAbsolutePath()+"  to   "+destination+"/"+file.getName() );
+					System.out.println("\t Move folder from "+file.getAbsolutePath()+"  to   "+destination+"/"+file.getName() );
 					
 					
 					//Move the directory and all its content
