@@ -11,7 +11,7 @@ Execution:
 
 ###Configuration
 
-Reads configuration parameter from a json file specified in command line (Configuration.json).
+Reads configuration parameters from a json file specified in command line (Configuration.json).
 
 Contents of Configuration.json:
 
